@@ -10,4 +10,9 @@
   { "type": "git"
   , "url": "https://github.com/tomekwi/gulp-es6-module.git"
   }
+
+, "dependencies":
+  { "gulp-util": "3.0.1"
+  , "through": "2.3.6"
+  }
 }

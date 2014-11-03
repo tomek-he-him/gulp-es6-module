@@ -1,4 +1,4 @@
-{ "browser": true
+{ "node": true
 , "laxbreak": true
 , "laxcomma": true
 , "undef": true
