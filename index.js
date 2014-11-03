@@ -4,10 +4,11 @@ var gutil = require('gulp-util')
   ;
 
 
-module.exports = function (exports, options) {
-    if (!options) options = {};
-    if (typeof exports !== 'object') {
-        throw new PluginError('gulp-es6-module', 'Argument `exports` missing.');
+module.exports = function (exports) {
+    if (typeof exports == 'string') {
+        exports = {default: exports};
+    } else if (typeof exports != 'object') {
+        throw new PluginError('gulp-es6-module', 'Argument `exports` must be an Object or String.');
     }
 
     var exportKeys, addExport, writeBuffer, endStream
@@ -15,15 +16,16 @@ module.exports = function (exports, options) {
 
     exportKeys = Object.keys(exports);
     if (!exportKeys.length) {
-        throw new PluginError('gulp-es6-module', 'Argument `exports` has no valid keys.');
+        throw new PluginError('gulp-es6-module', 'Argument `exports` must have at least one key.');
     }
 
     writeBuffer = function writeBuffer (file) {
         if (file.isNull()) return;
         if (file.isStream()) {
-            return this.emit( 'error'
-                            , new PluginError('gulp-es6-module', 'Streaming not supported')
-                            );
+            return this.emit
+              ( 'error'
+              , new PluginError('gulp-es6-module', 'Streaming not supported')
+              );
         }
 
         var noSemicolon = {value: true}
@@ -40,7 +42,7 @@ module.exports = function (exports, options) {
     };
 
     addExport = function addExport (noNewline, noSemicolon) {
-        return function (key, contents) {
+        return function (contents, key) {
             if (noNewline.value) {
                 contents += '\n';
                 noNewline.value = false;
